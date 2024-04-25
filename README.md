@@ -4,6 +4,14 @@
 
 RoboCup is an international robotics tournament held around the world every year. More information can be found here: https://www.robocup.org/. The tournament we participated in this year was RoboCup Junior Lightweight.
 
+<h2>Competition and Awards</h2>
+
+2024 RCJ National Soccer Champion (Toronto)
+
+2024 RCJ Regional Soccer Champion (Montreal)
+
+2024 RCJ Regional Soccer Super Team Champion (Montreal)
+
 <h2>3D Model Link</h2>
 
 [https://a360.co/3x0yv2s](https://a360.co/3x0yv2s)
@@ -11,7 +19,6 @@ RoboCup is an international robotics tournament held around the world every year
 <h2>Project Pictures:</h2>
 
 <img src="soccer.png" alt="project-screenshot" width="470" height="400/">
-
   
   
 <h2>💻 Built with</h2>
