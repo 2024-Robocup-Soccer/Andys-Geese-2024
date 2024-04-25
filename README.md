@@ -4,11 +4,11 @@
 
 RoboCup is an international robotics tournament held around the world every year. More information can be found here: https://www.robocup.org/. The tournament we participated in this year was RoboCup Junior Lightweight.
 
-<h2>3D Model</h2>
+<h2>3D Model Link</h2>
 
 [https://a360.co/3x0yv2s](https://a360.co/3x0yv2s)
 
-<h2>Project Screenshots:</h2>
+<h2>Project Pictures:</h2>
 
 <img src="soccer.png" alt="project-screenshot" width="470" height="400/">
 
@@ -19,6 +19,7 @@ RoboCup is an international robotics tournament held around the world every year
 Technologies used in the project:
 
 *   Fusion 360
+*   VS Code
 *   Prusa MK4 3D Printer
 *   Teensy 4.1
 *   OpenMv Camera
