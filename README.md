@@ -26,7 +26,7 @@ RoboCup is an international robotics tournament held around the world every year
 Technologies used in the project:
 
 *   Fusion 360
-*   VS Code
+*   VS Code (PlatformIO)
 *   Prusa MK4 3D Printer
 *   Teensy 4.1
 *   OpenMv Camera
