@@ -30,11 +30,9 @@ Technologies used in the project:
 *   Prusa MK4 3D Printer
 *   Teensy 4.1
 *   OpenMv Camera
-*   BNO085 Compass
-*   Adafruit OLED Display
+*   Adafruit BNO085 Compass
 *   TSSP4038
 *   GTF 50mm Omniwheels
-*   Motors
+*   GA25YN370 12V 1000RPM Motors
 *   Pololu G2 High-Power Motor Driver 18v25
 *   Photodiodes
-*   PCB
