@@ -5,3 +5,6 @@
 
 ## Code
 It uses a Taylor series to determine a function associated with the relationship between the intensity of the ball's signal and its distance from a given point.
+
+## Shroud
+After testing, we found that using a conical funnel directed toward the face of the sensors allowed for more reliable intensity values
