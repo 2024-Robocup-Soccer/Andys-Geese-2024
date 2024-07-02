@@ -18,7 +18,7 @@ RoboCup is an international robotics tournament held around the world every year
 
 <h2>Project Pictures:</h2>
 
-<img src="soccerrobot.png" alt="project-screenshot" width="470" height="400/">
+<img src="soccerrobot.png" alt="project-screenshot" width="370" height="400/">
   
   
 <h2>💻 Built with</h2>
