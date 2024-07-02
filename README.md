@@ -1,6 +1,6 @@
 <h1 align="center" id="title">Robocup Soccer</h1>
 
-<p id="description">A Lightweight Soccer Robot for Robocup Junior. Created by Matteo Cericola, John Qing, Josh Wang and Yuan Yoshimi. </p>
+<p id="description">A Lightweight Soccer Robot for Robocup Junior. Created by Matteo Cericola, John Qing, Sean Yien and Yuan Yoshimi. </p>
 
 RoboCup is an international robotics tournament held around the world every year. More information can be found here: https://www.robocup.org/. The tournament we participated in this year was RoboCup Junior Lightweight.
 
