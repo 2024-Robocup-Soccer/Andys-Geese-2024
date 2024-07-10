@@ -7,7 +7,7 @@ void setup() {
 
 void loop() {
   int val = pulseIn(10, HIGH, 1000);
-    if (val>0){
-      Serial.println(val);
-    }
+  if (val>0){
+    Serial.println(val);
+  }
 }
