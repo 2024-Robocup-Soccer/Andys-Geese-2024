@@ -1,6 +1,6 @@
 #include "motorControlV3.h"
 #include <RunningMedian.h>
-#include <ardiuno.h>
+#include <Ardiuno.h>
 
 const float pi = PI;
 
