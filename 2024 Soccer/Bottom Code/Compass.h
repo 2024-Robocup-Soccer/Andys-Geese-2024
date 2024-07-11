@@ -10,7 +10,7 @@ public:
     void initPrint();
     void resetCheck();
     void resetCheckPrint();
-    float getBallAngle();
+    float getBotAngle();
     
 private:
     void setReports();
