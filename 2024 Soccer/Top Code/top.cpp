@@ -225,21 +225,21 @@ void loop()
     int intensity = analogRead(IR_PINS[getBallAngle()]);
     int distance = findSensorDistance(ballAngle, intensity);
 
-    // Serial7.write(255);
-    // Serial7.write(compassAngle);
-    // Serial7.write(distance);
-    // Serial7.write(ballAngle);
-    //0 = no info from the camera
-    //1-250 = angle value of goal relative to robot
-    //500 = no goal found
-    // if (val>0){ //check if info from camera
-    //     Serial7.write(val);   
-    //     //Serial.println(val);
-    // }
-    // else{
-    //     Serial7.write(-1); //no info from camera, send -1
-    //     //Serial.println("No info");
-    // }
+    Serial7.write(255);
+    Serial7.write(compassAngle);
+    Serial7.write(distance);
+    Serial7.write(ballAngle);
+    // 0 = no info from the camera
+    // 1-250 = angle value of goal relative to robot
+    // 500 = no goal found
+    if (val>0){ //check if info from camera
+        Serial7.write(val);   
+        //Serial.println(val);
+    }
+    else{
+        Serial7.write(-1); //no info from camera, send -1
+        //Serial.println("No info");
+    }
 
     Serial.println(val);
    
