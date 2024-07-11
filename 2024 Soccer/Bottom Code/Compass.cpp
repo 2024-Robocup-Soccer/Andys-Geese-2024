@@ -24,6 +24,16 @@ void Compass::setReports(void) {
     }
 }
 
+void Compass::init() {
+    if (!bno08x.begin_UART(&Serial1)) {
+        while (1) {
+            delay(10);
+        }
+    }
+    if (!bno08x.enableReport(SH2_GAME_ROTATION_VECTOR)) {
+    }
+}
+
 void Compass::initPrint() {
     if (!bno08x.begin_UART(&Serial1)) {
         Serial.println("Failed to find BNO08x chip");
