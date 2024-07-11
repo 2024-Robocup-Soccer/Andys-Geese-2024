@@ -3,9 +3,9 @@
 
 class Motor {
 public:
-  static void initMotors();
-  static void setMotor(int motor, int dir, int pwm);
-  static void moveRobot(int speed1, int speed2, int speed3, int speed4);                                
+  void initMotors();
+  void setMotor(int motor, int dir, int pwm);
+  void moveRobot(int speed1, int speed2, int speed3, int speed4);                                
 };
 
 #endif
