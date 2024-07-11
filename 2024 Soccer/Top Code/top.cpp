@@ -178,7 +178,7 @@ void setup()
 {
 
     Serial.begin(9600);
-    Serial7.begin(9600);
+    //Serial7.begin(9600);
 
     if (!bno08x.begin_UART(&Serial1))
     {
@@ -214,7 +214,7 @@ void loop()
     int angle = irSensor.findBallDirection();
 
     int val = pulseIn(10, HIGH, 1000);
-    if (val>0)
+
 
     compassInit();
    
@@ -225,19 +225,23 @@ void loop()
     int intensity = analogRead(IR_PINS[getBallAngle()]);
     int distance = findSensorDistance(ballAngle, intensity);
 
-    Serial7.write(255);
-    Serial7.write(compassAngle);
-    Serial7.write(distance);
-    Serial7.write(ballAngle);
+    // Serial7.write(255);
+    // Serial7.write(compassAngle);
+    // Serial7.write(distance);
+    // Serial7.write(ballAngle);
     //0 = no info from the camera
     //1-250 = angle value of goal relative to robot
     //500 = no goal found
-    if (val>0){ //check if info from camera
-        Serial7.write(val);   
-    }
-    else{
-        Serial7.write(-1); //no info from camera, send -1
-    }
+    // if (val>0){ //check if info from camera
+    //     Serial7.write(val);   
+    //     //Serial.println(val);
+    // }
+    // else{
+    //     Serial7.write(-1); //no info from camera, send -1
+    //     //Serial.println("No info");
+    // }
+
+    Serial.println(val);
    
     //delay(10);
 }
