@@ -41,7 +41,7 @@ void Motor::moveRobot(int speed1, int speed2, int speed3, int speed4) {
     if(speed3 > 0) {
         setMotor(2, 1, speed3);
     }
-    else if(speed2 < 0) {
+    else if(speed3 < 0) {
         setMotor(2, 0, speed3*-1);
     }
     else {
@@ -51,7 +51,7 @@ void Motor::moveRobot(int speed1, int speed2, int speed3, int speed4) {
     if(speed4 > 0) {
         setMotor(3, 1, speed4);
     }
-    else if(speed2 < 0) {
+    else if(speed4 < 0) {
         setMotor(3, 0, speed4*-1);
     }
     else {
