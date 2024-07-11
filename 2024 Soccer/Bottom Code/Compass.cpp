@@ -72,6 +72,6 @@ void Compass::resetCheckPrint() {
     }
 }
 
-float Compass::getBallAngle() {
+float Compass::getBotAngle() {
     return sensorValue.un.gameRotationVector.k;
 }
