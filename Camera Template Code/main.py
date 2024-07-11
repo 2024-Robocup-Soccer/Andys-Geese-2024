@@ -26,7 +26,7 @@ clock = time.clock()
 p = Pin("P3", Pin.OUT)
 
 
-pwm = PWM(p, 100)
+pwm = PWM(p, 1000)
 
 def maptrans(num, inMin, inMax, outMin, outMax):
   return outMin + (float(num - inMin) / float(inMax - inMin) * (outMax
