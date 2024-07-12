@@ -34,11 +34,11 @@ float getBotAngle()
 //setup
 void setup(){
 
-    Serial.begin(9600);
+    //Serial.begin(9600);
     Serial7.begin(9600);
     if (!bno08x.begin_UART(&Serial1))
     {
-        Serial.println("Failed to find BNO08x chip");
+        //Serial.println("Failed to find BNO08x chip");
         while (1)
         {
             delay(10);
@@ -52,7 +52,7 @@ void setup(){
 void compassInit() {
      if (bno08x.wasReset())
     {
-        Serial.print("sensor was reset ");
+        //Serial.print("sensor was reset ");
         setReports();
     }
 
@@ -62,8 +62,7 @@ void compassInit() {
     }
 }
 
-void loop()
-{
+void loop() {
     compassInit();
     int val = pulseIn(10, HIGH, 1000);
     int compassAngle = getBotAngle()*100;
@@ -81,12 +80,12 @@ void loop()
     if (val>0){ Serial7.write(val);}
     else{Serial7.write(-1);}//No Info from Camera
 
-    // Serial.print("compass angle: ");
-    // Serial.println(compassAngle);
-    // Serial.print(" ball distance: ");
-    // Serial.println(distance);
-    // Serial.print(" ball angle: ");
-    // Serial.print(ballAngle);
-    // Serial.print(" net angle: ");
-    // Serial.println(val);
+    Serial.print("compass angle: ");
+    Serial.print(compassAngle);
+    Serial.print(" ball distance: ");
+    Serial.print(distance);
+    Serial.print(" ball angle: ");
+    Serial.print(ballAngle);
+    Serial.print(" net angle: ");
+    Serial.println(val);
 }
