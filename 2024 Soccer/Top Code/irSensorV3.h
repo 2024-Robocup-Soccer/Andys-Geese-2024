@@ -13,6 +13,15 @@ public:
     void printBallDirection();
     void debugValues();
     void debugComponents();
+    float findSensorDistance(int sensor, int intensity);
+    int getBallAngle();
+    float calculateCircularAverage();
+    float calculateSensorError(int desiredSensor, int actualSensor);
+    void readCalibratedSensors();
+    int getIntensity(int ballAngle);
+
+
+
 
 private:
     static const int sensorReadCount = 25;
