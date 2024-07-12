@@ -2,6 +2,7 @@
 #define COMPASS_H
 
 #include <Arduino.h>
+#include <Adafruit_BNO08x.h>
 
 class Compass {
 public: 
@@ -11,9 +12,9 @@ public:
     void resetCheck();
     void resetCheckPrint();
     float getBotAngle();
-    
-private:
     void setReports();
+
+
 };
 
 #endif
