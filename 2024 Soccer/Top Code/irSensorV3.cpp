@@ -1,5 +1,6 @@
 #include "irSensorV3.h"
 #include <RunningMedian.h>
+#include <math.h>
 
 IRSensor::IRSensor() 
 : s1Distance(sensorReadCount), s2Distance(sensorReadCount), s3Distance(sensorReadCount), s4Distance(sensorReadCount), s5Distance(sensorReadCount), s6Distance(sensorReadCount), s7Distance(sensorReadCount), s8Distance(sensorReadCount), s9Distance(sensorReadCount), s10Distance(sensorReadCount), s11Distance(sensorReadCount), s12Distance(sensorReadCount) {
@@ -206,7 +207,7 @@ void IRSensor::readCalibratedSensors() {
 float IRSensor::calculateCircularAverage() {
     float sinSum = 0.0;
     float cosSum = 0.0;
-    float radiansPerValue = (2.0 * 3.14) / 12.0;
+    float radiansPerValue = (2.0 * PI) / 12.0;
 
     for(int i = 0; i < numberMedianValues; i++) {
         float angle = sensorValues[i] * radiansPerValue;
