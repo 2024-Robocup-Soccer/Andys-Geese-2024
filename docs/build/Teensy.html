@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teensy &mdash; RoboCup2024Soccer 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="OpenMV" href="OpenMV.html" />
+    <link rel="prev" title="MCUs - All About Our Code" href="mcu.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            RoboCup2024Soccer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="mcu.html">MCUs -  All About Our Code</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Teensy</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#motorcontrolv3">motorControlV3</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N14motorControlV35MotorE"><code class="docutils literal notranslate"><span class="pre">Motor</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N14motorControlV35Motor14motorControlV35Motor10initMotorsEv"><code class="docutils literal notranslate"><span class="pre">Motor::initMotors()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N14motorControlV35Motor14motorControlV35Motor8setMotorEiii"><code class="docutils literal notranslate"><span class="pre">Motor::setMotor()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N14motorControlV35Motor14motorControlV35Motor20movementSineFunctionEif7booleani"><code class="docutils literal notranslate"><span class="pre">Motor::movementSineFunction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N14motorControlV35Motor14motorControlV35Motor9moveRobotEiiii"><code class="docutils literal notranslate"><span class="pre">Motor::moveRobot()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#colorsensorv2">colorSensorV2</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N13colorSensorV211ColorSensorE"><code class="docutils literal notranslate"><span class="pre">ColorSensor</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N13colorSensorV211ColorSensor13colorSensorV211ColorSensor10readSensorEi"><code class="docutils literal notranslate"><span class="pre">ColorSensor::readSensor()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N13colorSensorV211ColorSensor13colorSensorV211ColorSensor16colourSensorInitEv"><code class="docutils literal notranslate"><span class="pre">ColorSensor::colourSensorInit()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#compass">Compass</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N7Compass7CompassE"><code class="docutils literal notranslate"><span class="pre">Compass</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N7Compass7Compass7Compass7Compass4initEv"><code class="docutils literal notranslate"><span class="pre">Compass::init()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N7Compass7Compass7Compass7Compass9initPrintEv"><code class="docutils literal notranslate"><span class="pre">Compass::initPrint()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N7Compass7Compass7Compass7Compass10resetCheckEv"><code class="docutils literal notranslate"><span class="pre">Compass::resetCheck()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N7Compass7Compass7Compass7Compass15resetCheckPrintEv"><code class="docutils literal notranslate"><span class="pre">Compass::resetCheckPrint()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N7Compass7Compass7Compass7Compass11getBotAngleEv"><code class="docutils literal notranslate"><span class="pre">Compass::getBotAngle()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="OpenMV.html">OpenMV</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RoboCup2024Soccer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="mcu.html">MCUs -  All About Our Code</a></li>
+      <li class="breadcrumb-item active">Teensy</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/Teensy.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="teensy">
+<span id="id1"></span><h1>Teensy<a class="headerlink" href="#teensy" title="Link to this heading"></a></h1>
+<section id="motorcontrolv3">
+<h2>motorControlV3<a class="headerlink" href="#motorcontrolv3" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N14motorControlV35MotorE">
+<span id="_CPPv3N14motorControlV35MotorE"></span><span id="_CPPv2N14motorControlV35MotorE"></span><span id="motorControlV3::Motor"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">motorControlV3</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">Motor</span></span></span><a class="headerlink" href="#_CPPv4N14motorControlV35MotorE" title="Link to this definition"></a><br /></dt>
+<dd><p>Motor class, handles all of our motor controls. Accessed by the bottom file.</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14motorControlV35Motor14motorControlV35Motor10initMotorsEv">
+<span id="_CPPv3N14motorControlV35Motor14motorControlV35Motor10initMotorsEv"></span><span id="_CPPv2N14motorControlV35Motor14motorControlV35Motor10initMotorsEv"></span><span id="motorControlV3::Motor::motorControlV3::Motor::initMotors__void"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">motorControlV3</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Motor</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">initMotors</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14motorControlV35Motor14motorControlV35Motor10initMotorsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Initializes the pins. Pins are hard-locked to 3, 1, 5, 37 for the direction pins and 2, 0, 4, 36 for the pwm pins for the <a class="reference external" href="https://www.pololu.com/product/2995">Pololu G2 24v21 Motor Drivers</a>.</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14motorControlV35Motor14motorControlV35Motor8setMotorEiii">
+<span id="_CPPv3N14motorControlV35Motor14motorControlV35Motor8setMotorEiii"></span><span id="_CPPv2N14motorControlV35Motor14motorControlV35Motor8setMotorEiii"></span><span id="motorControlV3::Motor::motorControlV3::Motor::setMotor__i.i.i"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">motorControlV3</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Motor</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">setMotor</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">motor</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dir</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pwm</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14motorControlV35Motor14motorControlV35Motor8setMotorEiii" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets one motor direction and speed.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>int motor: Motor number that should have its speed and direction set. Not needed when calling <cite>:cpp:class:motorControlV3::Motor::moveRobot</cite>.</p></li>
+<li><p>int dir: direction value (0 or 1)</p></li>
+<li><p>int pwm: pwm value to send to power motors at a certain speed (0-255)</p></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14motorControlV35Motor14motorControlV35Motor20movementSineFunctionEif7booleani">
+<span id="_CPPv3N14motorControlV35Motor14motorControlV35Motor20movementSineFunctionEif7booleani"></span><span id="_CPPv2N14motorControlV35Motor14motorControlV35Motor20movementSineFunctionEif7booleani"></span><span id="motorControlV3::Motor::motorControlV3::Motor::movementSineFunction__i.float.boolean.i"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">motorControlV3</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Motor</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">movementSineFunction</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">motor</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">ballAngleDegrees</span></span>, <span class="n"><span class="pre">boolean</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">isCounter</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">amplitude</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14motorControlV35Motor14motorControlV35Motor20movementSineFunctionEif7booleani" title="Link to this definition"></a><br /></dt>
+<dd><p>Uses a sine function associated with each motor assembly to move in a direction from the according point in the sine wave given the ball direction.</p>
+<p>Returns an integer value for the pwm motor value for the motor given in the parameters.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>int motor: Motor number that we are calculating the appropriate value for.</p></li>
+<li><p>float ballAngleDegrees: Degrees of ball angle given in the IR code as a floating point number.</p></li>
+<li><p>boolean isCounter: True if motor is backwards, else false.</p></li>
+<li><p>int amplitude: Amplitude of the sine wave, also the distance to the ball that we want to stay away when navigating to the perpendicular.</p></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14motorControlV35Motor14motorControlV35Motor9moveRobotEiiii">
+<span id="_CPPv3N14motorControlV35Motor14motorControlV35Motor9moveRobotEiiii"></span><span id="_CPPv2N14motorControlV35Motor14motorControlV35Motor9moveRobotEiiii"></span><span id="motorControlV3::Motor::motorControlV3::Motor::moveRobot__i.i.i.i"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">motorControlV3</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Motor</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">moveRobot</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">speed1</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">speed2</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">speed3</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">speed4</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14motorControlV35Motor14motorControlV35Motor9moveRobotEiiii" title="Link to this definition"></a><br /></dt>
+<dd><p>Move robot with the speeds given for motors 1-4.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>int speed1: Speed of motor 1. (Can be -255 to 255)</p></li>
+<li><p>int speed2: Speed of motor 2. (Can be -255 to 255)</p></li>
+<li><p>int speed3: Speed of motor 3. (Can be -255 to 255)</p></li>
+<li><p>int speed4: Speed of motor 4. (Can be -255 to 255)</p></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="colorsensorv2">
+<h2>colorSensorV2<a class="headerlink" href="#colorsensorv2" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N13colorSensorV211ColorSensorE">
+<span id="_CPPv3N13colorSensorV211ColorSensorE"></span><span id="_CPPv2N13colorSensorV211ColorSensorE"></span><span id="colorSensorV2::ColorSensor"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">colorSensorV2</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">ColorSensor</span></span></span><a class="headerlink" href="#_CPPv4N13colorSensorV211ColorSensorE" title="Link to this definition"></a><br /></dt>
+<dd><p>ColorSensor class, handles all the input from our color sensors. There are 16 color sensors: 16 LEDs and 16 940nm photodiodes. All photodiodes output an analog value which is read by the ADC of our bottom Teensy.</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N13colorSensorV211ColorSensor13colorSensorV211ColorSensor10readSensorEi">
+<span id="_CPPv3N13colorSensorV211ColorSensor13colorSensorV211ColorSensor10readSensorEi"></span><span id="_CPPv2N13colorSensorV211ColorSensor13colorSensorV211ColorSensor10readSensorEi"></span><span id="colorSensorV2::ColorSensor::colorSensorV2::ColorSensor::readSensor__i"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">colorSensorV2</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ColorSensor</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">readSensor</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sensor</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N13colorSensorV211ColorSensor13colorSensorV211ColorSensor10readSensorEi" title="Link to this definition"></a><br /></dt>
+<dd><p>Read the sensor specified and returns an arbitrary int value for the detected amount of red light that is used in comparisons with other values.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>int sensor: Takes the sensor pin number. Refer to schematics for sensor numbers.</p></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N13colorSensorV211ColorSensor13colorSensorV211ColorSensor16colourSensorInitEv">
+<span id="_CPPv3N13colorSensorV211ColorSensor13colorSensorV211ColorSensor16colourSensorInitEv"></span><span id="_CPPv2N13colorSensorV211ColorSensor13colorSensorV211ColorSensor16colourSensorInitEv"></span><span id="colorSensorV2::ColorSensor::colorSensorV2::ColorSensor::colourSensorInit__void"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">colorSensorV2</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ColorSensor</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">colourSensorInit</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N13colorSensorV211ColorSensor13colorSensorV211ColorSensor16colourSensorInitEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Initializes color sensors. Takes no parameters.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="compass">
+<h2>Compass<a class="headerlink" href="#compass" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N7Compass7CompassE">
+<span id="_CPPv3N7Compass7CompassE"></span><span id="_CPPv2N7Compass7CompassE"></span><span id="Compass::Compass"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="#_CPPv4N7Compass7CompassE" title="Compass::Compass"><span class="n"><span class="pre">Compass</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">Compass</span></span></span><a class="headerlink" href="#_CPPv4N7Compass7CompassE" title="Link to this definition"></a><br /></dt>
+<dd><p>Compass class, uses Adafruit.h as a dependency for access to the BNO085 compass output.</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7Compass7Compass7Compass7Compass4initEv">
+<span id="_CPPv3N7Compass7Compass7Compass7Compass4initEv"></span><span id="_CPPv2N7Compass7Compass7Compass7Compass4initEv"></span><span id="Compass::Compass::Compass::Compass::init__void"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">Compass</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Compass</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">init</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7Compass7Compass7Compass7Compass4initEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Initialize the compass by beginning Serial connection to the BNO085.</p>
+<blockquote>
+<div><p>Does not print anything and just opens the connection.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7Compass7Compass7Compass7Compass9initPrintEv">
+<span id="_CPPv3N7Compass7Compass7Compass7Compass9initPrintEv"></span><span id="_CPPv2N7Compass7Compass7Compass7Compass9initPrintEv"></span><span id="Compass::Compass::Compass::Compass::initPrint__void"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">Compass</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Compass</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">initPrint</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7Compass7Compass7Compass7Compass9initPrintEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Initialize the compass by beginning Serial connection to the BNO085.</p>
+<blockquote>
+<div><p>Prints a confirmation message and opens the connection.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7Compass7Compass7Compass7Compass10resetCheckEv">
+<span id="_CPPv3N7Compass7Compass7Compass7Compass10resetCheckEv"></span><span id="_CPPv2N7Compass7Compass7Compass7Compass10resetCheckEv"></span><span id="Compass::Compass::Compass::Compass::resetCheck__void"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">Compass</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Compass</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">resetCheck</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7Compass7Compass7Compass7Compass10resetCheckEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Checks if BNO085 has been reset. Sets the desired output again.</p>
+<blockquote>
+<div><p>Does not print a confirmation message and just performs the check and set.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7Compass7Compass7Compass7Compass15resetCheckPrintEv">
+<span id="_CPPv3N7Compass7Compass7Compass7Compass15resetCheckPrintEv"></span><span id="_CPPv2N7Compass7Compass7Compass7Compass15resetCheckPrintEv"></span><span id="Compass::Compass::Compass::Compass::resetCheckPrint__void"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">Compass</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Compass</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">resetCheckPrint</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7Compass7Compass7Compass7Compass15resetCheckPrintEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Checks if BNO085 has been reset. Sets the desired output again.</p>
+<blockquote>
+<div><p>Prints a confirmation message and performs the check and set.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7Compass7Compass7Compass7Compass11getBotAngleEv">
+<span id="_CPPv3N7Compass7Compass7Compass7Compass11getBotAngleEv"></span><span id="_CPPv2N7Compass7Compass7Compass7Compass11getBotAngleEv"></span><span id="Compass::Compass::Compass::Compass::getBotAngle__void"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">Compass</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Compass</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">getBotAngle</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7Compass7Compass7Compass7Compass11getBotAngleEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Gets the current bot angle based off the BNO085</p>
+<blockquote>
+<div><p>Returns a floating point value of the angle scale value from -1.00 to 1.00 where 0 is the direction it initializes in.</p>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mcu.html" class="btn btn-neutral float-left" title="MCUs - All About Our Code" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="OpenMV.html" class="btn btn-neutral float-right" title="OpenMV" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, John Qing, Matteo Cericola, Yuan Yoshimi, Josh Wang, Sean Yien.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
