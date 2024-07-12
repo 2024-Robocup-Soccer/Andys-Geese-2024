@@ -1,5 +1,6 @@
 #include <Arduino.h>
-#include <Adafruit.h>
+#include <Adafruit_BNO08x.h>
+#include "Compass.h"
 
 // For SPI mode, we need a CS pin
 #define BNO08X_CS 10
