@@ -63,7 +63,7 @@ void Motor::moveRobot(int speed1, int speed2, int speed3, int speed4) {
 // Returns motor value according to trig function associated with the ball angle.
 int movementSineFunction(int motor, float ballAngleDegrees, boolean isCounter, int amplitude) {
     float motorValue;
-    float ballAngle = pi/180 * ballAngleDegrees;
+    float ballAngle = PI/180 * ballAngleDegrees;
     switch (motor) {
         case 1:
             motorValue = amplitude * sin(ballAngle + PI / 4);
