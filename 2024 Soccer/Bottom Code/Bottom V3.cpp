@@ -4,38 +4,6 @@
 const float pi = PI;
 
 
-// Returns motor value according to trig function associated with the ball angle. If returns
-// -10.00, it didn't work (as function is between 1 --> -1)
-float movementSineFunction(int motor, float ballAngleDegrees, boolean isCounter, int amplitude) {
-    float motorValue;
-    float ballAngle = pi/180 * ballAngleDegrees;
-    switch (motor) {
-        case 1:
-            motorValue = amplitude * sin(ballAngle + PI / 4);
-            // motorValue = amplitude * sin(ballAngle);
-            break;
-        case 2:
-            motorValue = amplitude * sin(ballAngle - PI / 4);
-            // motorValue = amplitude * sin(ballAngle - PI/2);
-            break;
-        case 3:
-            motorValue = amplitude * sin(ballAngle - 3 * PI / 4);
-            // motorValue = amplitude * -1 * sin(ballAngle - PI/2);
-            break;
-        case 4:
-            motorValue = amplitude * sin(ballAngle + 3 * PI / 4);
-            // motorValue = amplitude * -1 * sin(ballAngle - PI/2);
-            break;
-        default: motorValue = 0;
-        
-    }
-
-    if (isCounter) {
-        motorValue *= -1;
-    }
-
-    return motorValue;
-}
 
 int calculateAngleError(int desiredDegrees, int actualDegrees) {
     int error = desiredDegrees - actualDegrees;
@@ -154,7 +122,7 @@ void loop() {
         if(currentBallAngleDegrees > 180) isMovingCounterClockwise = true;
         else isMovingCounterClockwise = false;
         for(int i = 0; i < 4; i++) {
-            motorValues[i] = movementSineFunction(i+1, currentBallAngleDegrees, isMovingCounterClockwise, speed);
+            motorValues[i] = motorController.movementSineFunction(i+1, currentBallAngleDegrees, isMovingCounterClockwise, speed);
             Serial.print(motorValues[i]);
             Serial.print(" ");
             // Serial.print(currentBallAngleDegrees);
