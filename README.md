@@ -1,3 +1,5 @@
+[![Documentation Status](https://readthedocs.org/projects/andys-geese-2024/badge/?version=latest)](https://andys-geese-2024.readthedocs.io/en/latest/?badge=latest)
+
 <h1 align="center" id="title">Robocup Soccer</h1>
 
 <p id="description">A Lightweight Soccer Robot for Robocup Junior. Created by Matteo Cericola, John Qing, Sean Yien and Yuan Yoshimi. </p>
