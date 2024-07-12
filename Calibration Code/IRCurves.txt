@@ -1,5 +1,6 @@
 ## IR Sensor Curves Per Motor
-Sensor	Equations
+Sensor	Equations 
+Bot 2
 12	    y = 1.9214x - 81.673
 1	      y = 1.6369x - 72.97
 2  	    y = 1.5889x - 65.907
