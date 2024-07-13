@@ -1,5 +1,5 @@
 [![Documentation Status](https://readthedocs.org/projects/andys-geese-2024/badge/?version=latest)](https://andys-geese-2024.readthedocs.io/en/latest/?badge=latest)
-[![Commits](https://badgen.net/github/commits/YuanYoshimi/RCJ-Soccer-Robot)
+![Commits](https://badgen.net/github/commits/YuanYoshimi/RCJ-Soccer-Robot)
 
 <h1 align="center" id="title">Robocup Soccer</h1>
 
