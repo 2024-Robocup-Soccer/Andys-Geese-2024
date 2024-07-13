@@ -1,0 +1,3 @@
+- name: arduino/setup-task
+  uses: arduino/setup-task@v2.0.0
+            
