@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 Welcome to Andy's Geese's 2024 Soccer documentation!
-=============================================
+====================================================
 
 Everything research related and code libraries as well as communication protocols are documented in this site. To follow along, our GitHub is available at `Soccer GitHub <https://github.com/YuanYoshimi/RCJ-Soccer-Robot>`_.
 
@@ -13,6 +13,8 @@ Everything research related and code libraries as well as communication protocol
    :caption: Contents:
 
    mcu
+   hardware
+
 Indices and tables
 ==================
 
