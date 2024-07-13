@@ -11,7 +11,7 @@ If you would like to download Fusion 360, the education edition is `free <https:
 
 .. toctree::
     Infrared Sensors <irsensors>
-    Colour Sensors <colorsensors>
+    Color Sensors <colorsensors>
     3D Design <models>
     Design Process <dp>
 

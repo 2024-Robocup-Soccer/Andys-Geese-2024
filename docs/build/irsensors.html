@@ -83,6 +83,33 @@
 <p>We used the TSSP4038, which was a popular choice for IR detectors. We ordered ours from Mouser, but there are many other distributors who sell the TSSP4038.</p>
 <p><a class="reference external" href="https://www.vishay.com/docs/82458/tssp40.pdf">Datasheet</a></p>
 <p>Initially, we had first experimented with the data output. Our oscilloscope indicated that the output was essentially a square wave. We did not understand the intensities at this point in time, so we placed a low-pass filter on it in order to read the square wave value as an analog input.</p>
+<p>After playing around with the capacitor and resistor values as well as adding a pull up resistor, we were able to achieve a circuit with reasonable output on a breadboard. In later PCB designs, we used the same circuitry depicted in the schematic excerpt below:</p>
+<img alt="_images/schem1out.png" src="_images/schem1out.png" />
+<p>However, as specified by datasheets and online, the output of the IR ball is quite a bit more complicated than what we saw with this simple circuit.</p>
+<p>The ball outputs a stepped waveform of different groups of intensity. That means the ball will pulse at different intensities for a certain amount of times. This is depicted in the diagram below (Mode A since that is what is used in the international competition):</p>
+<img alt="_images/ballspecs.png" src="_images/ballspecs.png" />
+<p>Thus, the dropping intensity near the end of the cycle means the further you are from the ball, the less you can see. Naturally, when light intensity drops below a certain threshold, the receivers can no longer distinguish between the ball’s light and the ambient light. Therefore, the receiver no longer perceives the lower intensities the further away you move. This means that every time we move out of range of one intensity, the length of the square wave changes. And by sampling for this length, we can determine the distance from the ball, up to a resolution of approximately 5 different distances.</p>
+<p>One might now ask, “how would I sample this distance”? Well, for one, pulseIn() on arduino works perfectly fine. What pulseIn() does is measure the length of a digital signal’s state that it stays in. So if we connect both the grounds of the arduino (or other arduino avr board) and the receiver (this allows us to work with a common logic signal) and connect the output of the previously mentioned IR receiver, we can just directly pulseIn() to get the length of the pulse.</p>
+<p>The code for this is really quite simple, an example is shown (assuming your IR output is connected to pin 1):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span><span class="n">connections</span><span class="p">:</span>
+<span class="o">//</span><span class="n">IR</span> <span class="n">Receiver</span> <span class="n">Out</span> <span class="o">-&gt;</span> <span class="n">Digital</span> <span class="n">Pin</span> <span class="mi">1</span>
+<span class="o">//</span><span class="n">IR</span> <span class="n">Receiver</span> <span class="n">GND</span> <span class="o">-&gt;</span> <span class="n">Board</span> <span class="n">Ground</span> <span class="p">(</span><span class="n">This</span> <span class="n">syncs</span> <span class="n">their</span> <span class="n">logic</span> <span class="n">base</span> <span class="n">level</span><span class="p">)</span>
+<span class="o">//</span><span class="n">IR</span> <span class="n">Receiver</span> <span class="n">VCC</span> <span class="o">-&gt;</span> <span class="n">Read</span> <span class="n">datasheet</span> <span class="k">for</span> <span class="n">appropriate</span> <span class="n">voltage</span><span class="o">.</span>
+<span class="n">void</span> <span class="n">setup</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">pinMode</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">INPUT</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">void</span> <span class="n">loop</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">length</span> <span class="o">=</span> <span class="n">pulseIn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">HIGH</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span> <span class="o">//</span><span class="n">note</span> <span class="n">that</span> <span class="n">we</span> <span class="n">are</span> <span class="n">reading</span> <span class="n">HIGH</span><span class="p">,</span> <span class="n">which</span> <span class="n">means</span> <span class="n">that</span> <span class="n">we</span> <span class="n">are</span> <span class="n">looking</span> <span class="k">for</span> <span class="n">the</span> <span class="n">length</span> <span class="n">of</span> <span class="n">the</span> <span class="n">pulse</span> <span class="n">when</span> <span class="n">it</span> <span class="ow">is</span> <span class="n">above</span> <span class="n">logic</span> <span class="n">low</span> <span class="p">(</span><span class="n">logic</span> <span class="n">ground</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Alternatively, the option of using a low pass filter exists. This is because when we move out of an intensity’s range, we no longer detect the pulses at that intensity. Therefore, the low pass filter will turn the wave into a lower analog signal, due to the decreased length of the wave.</p>
+<p>Both work well, but the low pass filter method is easier if you have a slower MCU, since pulseIn() may not be accurate if your MCU clock speed is too low.</p>
+<p>We adapted both low pass and pulseIn() for our PCB design, shown below (also found on our GitHub).</p>
+<img alt="_images/IRPCB.png" src="_images/IRPCB.png" />
 </section>
 
 

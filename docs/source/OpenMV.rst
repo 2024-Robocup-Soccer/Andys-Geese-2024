@@ -79,7 +79,6 @@ You will notice that part of the previously created code also includes the commu
 This sets up a PWM object given by the OpenMV library for use with pins on the RT1062. By modifying the duty cycle %, we can send a pulse with a different width. We decided to use this width, measuring in microseconds, to transfer our data.
 
 We began by mapping (see API reference :py:func:`maptrans`) the x pixel value that we get a value from 0-250 that we send in the PWM signal. When there is no goal detected, we will send a PWM signal of 500.
-
 ::
     def maptrans(num, inMin, inMax, outMin, outMax):
         return outMin + (float(num - inMin) / float(inMax - inMin) * (outMax - outMin))
@@ -93,12 +92,12 @@ This way, when read from the Teensy, we can just use pulseIn().
         Serial.println(val);
     }
 
-A value of 1000 for the timeout is required since the width of the pulses are hundreds of microseconds, so we must have 1000 µs as a timeout time.
+A value of 1000 for the timeout is required since the width of the pulses are hundreds of microseconds, so we must have 1000 µs as a timeout time in order to catch the entire pwm signal rather than parts of a pwm signal.
 
 
 The resulting square wave is visible on an oscilloscope. Thus we can be assured that the signal is indeed being produced when degbugging.
 
-.. |setup image| image:: 1.jpg
+.. image:: 1.jpg
     :width: 600
     :alt: setup picture
 

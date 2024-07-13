@@ -157,13 +157,10 @@
 </div>
 <p>This sets up a PWM object given by the OpenMV library for use with pins on the RT1062. By modifying the duty cycle %, we can send a pulse with a different width. We decided to use this width, measuring in microseconds, to transfer our data.</p>
 <p>We began by mapping (see API reference <a class="reference internal" href="#maptrans" title="maptrans"><code class="xref py py-func docutils literal notranslate"><span class="pre">maptrans()</span></code></a>) the x pixel value that we get a value from 0-250 that we send in the PWM signal. When there is no goal detected, we will send a PWM signal of 500.</p>
-<dl class="simple">
-<dt>::</dt><dd><dl class="simple">
-<dt>def maptrans(num, inMin, inMax, outMin, outMax):</dt><dd><p>return outMin + (float(num - inMin) / float(inMax - inMin) * (outMax - outMin))</p>
-</dd>
-</dl>
-</dd>
-</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">maptrans</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="n">inMin</span><span class="p">,</span> <span class="n">inMax</span><span class="p">,</span> <span class="n">outMin</span><span class="p">,</span> <span class="n">outMax</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">outMin</span> <span class="o">+</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">num</span> <span class="o">-</span> <span class="n">inMin</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">inMax</span> <span class="o">-</span> <span class="n">inMin</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">outMax</span> <span class="o">-</span> <span class="n">outMin</span><span class="p">))</span>
+</pre></div>
+</div>
 <p>Then, we can adjust the width of the pulse (duty cycle %) with <a class="reference external" href="https://docs.openmv.io/library/machine.PWM.html">pwm.duty_ns</a></p>
 <p>This way, when read from the Teensy, we can just use pulseIn().</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">val</span> <span class="o">=</span> <span class="n">pulseIn</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">HIGH</span><span class="p">,</span> <span class="mi">1000</span><span class="p">);</span>
@@ -172,8 +169,9 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>A value of 1000 for the timeout is required since the width of the pulses are hundreds of microseconds, so we must have 1000 µs as a timeout time.</p>
+<p>A value of 1000 for the timeout is required since the width of the pulses are hundreds of microseconds, so we must have 1000 µs as a timeout time in order to catch the entire pwm signal rather than parts of a pwm signal.</p>
 <p>The resulting square wave is visible on an oscilloscope. Thus we can be assured that the signal is indeed being produced when degbugging.</p>
+<a class="reference internal image-reference" href="_images/1.jpg"><img alt="setup picture" src="_images/1.jpg" style="width: 600px;" /></a>
 </section>
 <section id="api-reference">
 <h2>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h2>
