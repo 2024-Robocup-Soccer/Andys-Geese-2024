@@ -34,7 +34,7 @@ float getBotAngle()
 //setup
 void setup(){
 
-    //Serial.begin(9600);
+    Serial.begin(9600);
     Serial7.begin(9600);
     if (!bno08x.begin_UART(&Serial1))
     {
@@ -54,13 +54,33 @@ void compassInit() {
     {
         //Serial.print("sensor was reset ");
         setReports();
-    }
+    // }
 
     if (!bno08x.getSensorEvent(&sensorValue))
     {
         return;
     }
 }
+//type 1 = compass, 2 = ball distance, 3 = ball angle, 4 = net angle
+int pack(int value, int type) {
+    int info = -1;
+    switch(type) {
+    case 1: 
+        info = map(value, -99, 99, 0, 360);
+        break;
+    case 2:
+        info = map(value, 0, 1557, 0, 250);
+        break;
+    case 3:
+        info = map(value, 0, 11, 0, 250);
+        break;
+    case 4: 
+        info = info;
+        break;
+    }
+    return info;
+}
+
 
 void loop() {
     compassInit();
@@ -71,21 +91,23 @@ void loop() {
     int distance = irSensor.findSensorDistance(ballAngle, intensity);
 
     Serial7.write(255);
-    Serial7.write(compassAngle);
-    Serial7.write(distance);
-    Serial7.write(ballAngle);
+    Serial7.write(pack(compassAngle, 1));
+    Serial7.write(pack(distance, 2));
+    Serial7.write(pack(ballAngle, 3));
     // 0 = no info from the camera
     // 1-250 = angle value of goal relative to robot
     // 500 = no goal found
-    if (val>0){ Serial7.write(val);}
+    if (val>0){ Serial7.write(pack(val,4));}
     else{Serial7.write(-1);}//No Info from Camera
 
-    Serial.print("compass angle: ");
-    Serial.print(compassAngle);
-    Serial.print(" ball distance: ");
-    Serial.print(distance);
-    Serial.print(" ball angle: ");
-    Serial.print(ballAngle);
-    Serial.print(" net angle: ");
-    Serial.println(val);
+
+    
+    // Serial.print("compass angle: ");
+    // Serial.println(pack(compassAngle, 1));
+    // Serial.print(" ball distance: ");
+    // Serial.println(distance);
+    // Serial.print(" ball angle: ");
+    // Serial.println(ballAngle);
+    // Serial.print(" net angle: ");
+    // Serial.println(val);
 }
