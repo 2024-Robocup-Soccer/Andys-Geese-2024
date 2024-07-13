@@ -66,7 +66,7 @@ int pack(int value, int type) {
     int info = -1;
     switch(type) {
     case 1: 
-        info = map(value, -99, 99, 0, 360);
+        info = map(value, -99, 99, 0, 250);
         break;
     case 2:
         info = map(value, 0, 1557, 0, 250);
