@@ -5,24 +5,6 @@
 
 const float pi = PI;
 
-int unpackData(int value, int type) {
-    int info = -1;
-    if(type == 1) {
-        info = map(value, 1, 250, -180, 180);
-    }
-    //not done
-    else if(type == 2) {
-        info = value;
-    }
-    else if(type == 3) {
-        info = map(value, 1, 250, -180, 180);
-    }
-    else if(type == 4) {
-        info = map(value, 0, 250, -50, 50);
-    }
-    return info;
-}
-
 int movementSineFunction(int motor, float ballAngleDegrees, boolean isCounter, int amplitude) {
     float motorValue;
     float ballAngle = PI/180 * ballAngleDegrees;
@@ -79,6 +61,27 @@ void setup() {
     motorController.initMotors();
 }
 
+
+int unpackData(int value, int type) {
+    int info = -1;
+    if(type == 1) {
+         info = map(value, 0, 250, -180, 180);
+        // info = value;
+    }
+    //not done
+    else if(type == 2) {
+        info = value;
+    }
+    else if(type == 3) {
+         info = map(value, 0, 250, 0, 360);
+        //info = value;
+    }
+    else if(type == 4) {
+        info = map(value, 0, 250, -50, 50);
+    }
+    return info;
+}
+
 //variables needed for PID
 float kPBall[4] = {1.00, 1.00, 1.00, 1.00};
 float kIBall[4] = {1.00, 1.00, 1.00, 1.00};
@@ -129,26 +132,32 @@ void loop() {
         information = Serial2.read();
         switch (inputType) {
         case 0:
-            if(information == 255) inputType++;
+            if(information == 255) {inputType++;}
+            Serial.println("Case 0");
             break;
         case 1:
             robotAngle = unpackData(information, 1);
+            Serial.println("Case 1");
             inputType++;
             break;
         case 2:
             ballDistance = unpackData(information,2);
+            Serial.println("Case 2");
             inputType++;
             break;
         case 3:
             ballAngle = unpackData(information,3);
+            Serial.println("Case 3");
             inputType++;
             break;
         case 4:
             netAngle = unpackData(information,4);
+            Serial.println("Case 4");
             inputType = 0;
             break;
         }
     }
+
     Serial.print("Robot Angle: ");
     Serial.print(robotAngle);
     Serial.print(" Ball Distance: ");
@@ -186,7 +195,6 @@ void loop() {
     // motorValue = pK*angleError;
     motorValue2 = pK*angleError2 + iK*iAngleError2 + dK*dAngleError2;
 
-
     if(currentBallAngleDegrees == 0) {
         motorValues[0] = -255;
         motorValues[1] = -255;
@@ -207,7 +215,6 @@ void loop() {
         }
     }
     
-
     pastRobotAngleError = robotAngleError;
     robotAngleError = calculateAngleError(robotDesiredAngle, robotAngle);
 
@@ -223,28 +230,27 @@ void loop() {
     
     //motorController.moveRobot(motorValue2, motorValue2, motorValue2, motorValue2);
 
-
     int newMotorValues1, newMotorValues2, newMotorValues3, newMotorValues4;
-    if(motorValue2!=0){
+    
         newMotorValues1 = (motorValues[0] + motorValue2)/2;
         newMotorValues2 = (motorValues[1] + motorValue2)/2;
         newMotorValues3 = (motorValues[2] + motorValue2)/2;
         newMotorValues4 = (motorValues[3] + motorValue2)/2;
-    }
-    if(ballAngle = 0){
+        
+        motorController.moveRobot(motorValues[0], motorValues[1], motorValues[2], motorValues[3]);
 
-        motorController.moveRobot(motorValue2, motorValue2, motorValue2, motorValue2);
-        //  Serial.print(motorValue2);
-        //     Serial.print(" ");
-     
-    }
-    else{
-           motorController.moveRobot(motorValues[0], motorValues[1], motorValues[2], motorValues[3]);
-            for (int i =0; i<4;i++){
-                // Serial.print(motorValues[i]);
-                // Serial.print(" ");
-            }
-           
-    }
+    // if(ballAngle = 0){
+    //     motorController.moveRobot(motorValue2, motorValue2, motorValue2, motorValue2);
+    //     //  Serial.print(motorValue2);
+    //     //     Serial.print(" ");
+    // }
+    // else{
+    //        motorController.moveRobot(motorValues[0], motorValues[1], motorValues[2], motorValues[3]);
+    //         for (int i =0; i<4;i++){
+    //             // Serial.print(motorValues[i]);
+    //             // Serial.print(" ");
+    //         }      
+    // }
+    // motorController.moveRobot(newMotorValue1, newMotorValues2, newMotorValues3, newMotorValues4);
 
 }
