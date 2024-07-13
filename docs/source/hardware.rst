@@ -14,5 +14,6 @@ If you would like to download Fusion 360, the education edition is `free <https:
     Color Sensors <colorsensors>
     3D Design <models>
     Design Process <dp>
+    PCB Design <pcb>
 
 

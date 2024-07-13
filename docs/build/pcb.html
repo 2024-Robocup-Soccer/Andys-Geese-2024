@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hardware - Our Designs and Electronics &mdash; RoboCup2024Soccer 0.0.1 documentation</title>
+  <title>PCB Design &mdash; RoboCup2024Soccer 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
@@ -21,8 +21,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Infrared Sensors" href="irsensors.html" />
-    <link rel="prev" title="OpenMV" href="OpenMV.html" /> 
+    <link rel="prev" title="Design Process" href="dp.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -47,12 +46,15 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="mcu.html">MCUs -  All About Our Code</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Hardware - Our Designs and Electronics</a><ul>
+<li class="toctree-l1 current"><a class="reference internal" href="hardware.html">Hardware - Our Designs and Electronics</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="irsensors.html">Infrared Sensors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="colorsensors.html">Color Sensors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="models.html">3D Design</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dp.html">Design Process</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pcb.html">PCB Design</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">PCB Design</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#layer-stack">Layer Stack</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -71,9 +73,10 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Hardware - Our Designs and Electronics</li>
+          <li class="breadcrumb-item"><a href="hardware.html">Hardware - Our Designs and Electronics</a></li>
+      <li class="breadcrumb-item active">PCB Design</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/hardware.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/pcb.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -81,35 +84,27 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="hardware-our-designs-and-electronics">
-<span id="hardware"></span><h1>Hardware - Our Designs and Electronics<a class="headerlink" href="#hardware-our-designs-and-electronics" title="Link to this heading"></a></h1>
-<p>This section of the documentation will go over the specifics around our hardware, such as our electronic design process and 3D modelling.</p>
-<p>We use Fusion 360 and Fusion 360 Electronics as our CAD software, and like before, associated files are available at our <a class="reference external" href="https://github.com/YuanYoshimi/RCJ-Soccer-Robot/">GitHub</a>.</p>
-<p>If you would like to download Fusion 360, the education edition is <a class="reference external" href="https://www.autodesk.com/ca-en/products/fusion-360/education">free</a>. It contains all aspects of the paid license and is available to all students. Our files can be opened with the proper Fusion 360 Electronics and Fusion 360 software.</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="irsensors.html">Infrared Sensors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="colorsensors.html">Color Sensors</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="colorsensors.html#principle">Principle</a></li>
-<li class="toctree-l2"><a class="reference internal" href="colorsensors.html#execution">Execution</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="models.html">3D Design</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dp.html">Design Process</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pcb.html">PCB Design</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pcb.html#layer-stack">Layer Stack</a></li>
-</ul>
-</li>
-</ul>
+  <section id="pcb-design">
+<span id="pcb"></span><h1>PCB Design<a class="headerlink" href="#pcb-design" title="Link to this heading"></a></h1>
+<section id="layer-stack">
+<h2>Layer Stack<a class="headerlink" href="#layer-stack" title="Link to this heading"></a></h2>
+<p>After doing much research, we decided to opt for a 4 layer PCB since it only requires a marginal increase in PCB production cost.</p>
+<p>Our layer stack is illustrated here:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Top</span> <span class="o">-&gt;</span> <span class="n">Signal</span> <span class="n">Layer</span>
+<span class="n">Middle1</span> <span class="o">-&gt;</span> <span class="n">GND</span> <span class="n">Plane</span>
+<span class="n">Middle2</span> <span class="o">-&gt;</span> <span class="n">Pwr</span> <span class="n">Plane</span> <span class="p">(</span><span class="n">highest</span> <span class="n">voltage</span> <span class="n">takes</span> <span class="n">priority</span><span class="p">,</span> <span class="nb">all</span> <span class="n">other</span> <span class="n">voltages</span> <span class="n">are</span> <span class="n">on</span> <span class="n">a</span> <span class="n">signal</span> <span class="n">layer</span>
+<span class="n">Bottom</span> <span class="o">-&gt;</span> <span class="n">Signal</span> <span class="n">Layer</span>
+</pre></div>
 </div>
+<p>You may notice that we have isolated power from our signal layers. Not only does this make it much easier to route the PCB (the different components who need power can just receive it from a via to the correct layer), it also helps prevent electromagnetic interference. Since pushing a voltage through a trace creates an electromagetic field around the moving electrons, by isolating the power with the signal, we have less chances of interference where the electromagnetic field created in the traces cause a current in the signal traces and renders our signals unreadable.</p>
+</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="OpenMV.html" class="btn btn-neutral float-left" title="OpenMV" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="irsensors.html" class="btn btn-neutral float-right" title="Infrared Sensors" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="dp.html" class="btn btn-neutral float-left" title="Design Process" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
