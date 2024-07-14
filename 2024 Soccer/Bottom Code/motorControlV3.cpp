@@ -6,7 +6,7 @@ const int DIR_PINS[] = { 3, 1, 5, 37 };
 const int PWM_PINS[] = { 2, 0, 4, 36 };
 
 
-void Motor::initMotors() {
+void Motor::init() {
   for (int i = 0; i < 4; i++) {
     pinMode(DIR_PINS[i], OUTPUT);
     pinMode(PWM_PINS[i], OUTPUT);
