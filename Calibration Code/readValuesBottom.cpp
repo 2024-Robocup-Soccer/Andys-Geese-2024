@@ -2,7 +2,7 @@
 #include <SPI.h>
 
 int inputType = 0;
-int ballAngle =- 1, netAngle, ballDistance, robotAngle;
+int ballAngle =- 1, netAngle, ballDistance, robotAngle, pastNetAng;
 float desiredBallAngleDegrees = 0.00, currentBallAngleDegrees = 0.00;
 
 //COMMUNICATION
@@ -35,23 +35,28 @@ void sync() {
 int unpackData(int value, int type) {
     int info = -1;
     if(type == 1) {
-        // info = map(value, 0, 250, 0, 360);
-        info = value;
+        info = map(value, 0, 250, -180, 180);
     }
     //not done
     else if(type == 2) {
         info = value;
     }
     else if(type == 3) {
-         info = map(value, 0, 250, 0, 360);
-        //info = value;
+        info = map(value, 0, 250, 0, 11);
     }
     else if(type == 4) {
-        info = map(value, 0, 250, -50, 50);
+        if(value != 253) {
+            pastNetAng = netAngle;
+            value = 0;
+        }
+        else if (value == 0) {
+            value = pastNetAng;
+        }
+
+        info = map(value, 1, 250, -50, 50);
     }
     return info;
 }
-
 
 
 void setup() {
