@@ -6,8 +6,6 @@ Motor motorController;
 
 //information from top
 float robotAngle, ballDistance, ballAngle, netAngle;
-//Running Median of ball values
-// RunningMedian ballAngleMedian = RunningMedian(5);
 //prev info from top
 float pastNetAng;
 
@@ -35,7 +33,7 @@ float dMovementError = 0.0;
 
 //ANGLE PID 
 //angle pid constants --- CHANGE TO MAKE GOOD MOVEMENT (generally keep all between 0.00 - 1.00)
-float kPAngle = 0.002, kIAngle = 0.00002, kDAngle = 0.0;
+float kPAngle = 1.0, kIAngle = 0.00002, kDAngle = 0.0;
 //previous ball error value
 float pastAngleError = 0;
 //angle error sum
@@ -82,8 +80,6 @@ float calculateAngleError(float desiredDegrees, float actualDegrees, int type) {
     float error = desiredDegrees - actualDegrees;
 
     switch(type) {
-    //this is the case where we are using the camera pid which is the normal case
-    //zero is straight in front and counter-clockwise is positive
     case 1:
         if (error > 180) {
             error -= 360;
@@ -91,9 +87,7 @@ float calculateAngleError(float desiredDegrees, float actualDegrees, int type) {
         else if (error < -180) {
             error += 360;
         }
-    //this is the other case when the bot can no longer see the net
-    //it now needs to find the error of robot angle which follows same
-    //pattern as net, counter-clockwise (+) to 0 to clockwise (-)
+        break;
     case 2:
         error *= (360/12);
         if (error > 180) {
@@ -102,6 +96,7 @@ float calculateAngleError(float desiredDegrees, float actualDegrees, int type) {
         else if (error < -180) {
             error += 360;
         }
+        break;
     }
 
     return error;
@@ -220,7 +215,7 @@ void loop() {
         Serial2.readBytes(information, 5);
     }
 
-    robotAngle = unpackData(information[1], 1);
+    robotAngle = information[1];
     ballDistance = unpackData(information[2], 2);
     ballAngle = unpackData(information[3], 3);
     netAngle = unpackData(information[4], 4);
@@ -258,7 +253,8 @@ void loop() {
     // Serial.println(changeTime);
 
     for(int i = 0; i < 4; i++) {
-        motorValues[i] = anglePID(robotAngle, false, 1); //movementPID(i+1, isRotatingClockwise, 100, ballAngle)* (3/4) + 
+        // motorValues[i] = anglePID(robotAngle, false, 1); //movementPID(i+1, isRotatingClockwise, 100, ballAngle)* (3/4) + 
+        Serial.println(calculateAngleError(0, robotAngle, 1));
     }
 
     // motorController.moveRobot(motorValues[0], motorValues[1], motorValues[2], motorValues[3]);
