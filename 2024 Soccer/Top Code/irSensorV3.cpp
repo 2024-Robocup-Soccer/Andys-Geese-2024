@@ -1,12 +1,14 @@
+//---------Libraries---------
 #include "irSensorV3.h"
 #include <RunningMedian.h>
 #include <math.h>
 
+//Setting up the RunningMedian for each Sensor
 IRSensor::IRSensor() 
 : s1Distance(sensorReadCount), s2Distance(sensorReadCount), s3Distance(sensorReadCount), s4Distance(sensorReadCount), s5Distance(sensorReadCount), s6Distance(sensorReadCount), s7Distance(sensorReadCount), s8Distance(sensorReadCount), s9Distance(sensorReadCount), s10Distance(sensorReadCount), s11Distance(sensorReadCount), s12Distance(sensorReadCount) {
 }
 
-
+//Putting all the RunningMedian into a array
 const int numberMedianValues = 25;
 RunningMedian sDistances[12] = {RunningMedian(numberMedianValues), RunningMedian(numberMedianValues), RunningMedian(numberMedianValues), 
 RunningMedian(numberMedianValues), RunningMedian(numberMedianValues), RunningMedian(numberMedianValues),RunningMedian(numberMedianValues), 
@@ -14,12 +16,14 @@ RunningMedian(numberMedianValues), RunningMedian(numberMedianValues), RunningMed
 RunningMedian(numberMedianValues)};
 
 
+//-----------Variables------------
 int lowestPin[numberMedianValues];
 int IR_PINS[12] = {A11, A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10};
 //12, 1, 2, 3 ... 11
 int sensorValues[12];
 
 
+//------------  
 void IRSensor::readSensors() {
     for (int i = 0; i < sensorReadCount; i++) {
         s1Distance.add(analogRead(A0));
@@ -65,7 +69,12 @@ int IRSensor::findMinSensor() {
 }
 
 int IRSensor::findBallDirection() {
-    int closestSensor = findMinSensor();
+    int averageCount= 100;
+    double closestSensor;
+    for (int i=0; i< averageCount;i++){
+        closestSensor += findMinSensor();
+    }
+    closestSensor = closestSensor/averageCount;
     return (closestSensor + 1) * 30;
 }
 
@@ -101,65 +110,53 @@ float IRSensor::findSensorDistance(int sensor, int intensity) {
     float distance = -1;
     switch (sensor) {
         case 0:
-             //distance = ; //Bot 1
-             distance = 1.9214*intensity - 81.673;//Bot 2
-             //distance = ;//Bot 3
+            //  distance = 1.9214*intensity - 81.673;//Bot 2
+             distance = 1.7369*intensity - 73.232;//Bot 3
             break;
         case 1:
-            //distance = ;//Bot 1
-            distance = 1.6369*intensity - 72.97;//Bot 2
-            //distance = ;//Bot 3
+            // distance =1.6369*intensity - 72.97;//Bot 2
+            distance =  1.4055*intensity - 65.84;//Bot 3
             break;
         case 2:
-            //distance = ;//Bot 1   
-            distance = 1.5889*intensity - 65.907;//Bot 2
-            //distance = ;//Bot 3
+            // distance = 1.5889*intensity - 65.907;//Bot 2
+            distance = 1.5968*intensity - 79.193;//Bot 3
             break;
         case 3:
-            //distance = ;//Bot 1
-            distance = 1.8732*intensity - 78.922;//Bot 2
-            //distance = ;//Bot 3
+            // distance = 1.8732*intensity - 78.922;//Bot 2
+            distance = 1.5068*intensity - 63.67;//Bot 3
             break;
         case 4:
-            //distance = ;//Bot 1
-            distance = 2.1074*intensity - 86.835;//Bot 2
-            //distance = ;//Bot 3
+            // distance = 2.1074*intensity - 86.835;//Bot 2
+            distance = 2.0493*intensity - 95.69;//Bot 3
             break;
 
         case 5:
-            //distance = ;//Bot 1
-           distance = 1.9093*intensity - 80.002;//Bot 2
-           //distance = ;//Bot 3
+        //    distance = 1.9093*intensity - 80.002;//Bot 2
+           distance = 1.3739*intensity - 61.794;//Bot 3
            break;
         case 6:
-            //distance = ;//Bot 1
-           distance = 1.6892*intensity - 71.084;//Bot 2
-           //distance = ;//Bot 3
+        //    distance = 1.6892*intensity - 71.084;//Bot 2
+           distance = 1.9931*intensity - 88.442;//Bot 3
            break;
         case 7:
-            //distance = ;//Bot 1
-            distance = 1.7187*intensity - 73.411;//Bot 2
-            //distance = ;//Bot 3
+            // distance = 1.7187*intensity - 73.411;//Bot 2
+            distance = 1.5659*intensity - 64.019;//Bot 3
            break;
         case 8:
-            //distance = ;//Bot 1
-           distance = 1.7463*intensity - 76.2;//Bot 2
-           //distance = ;//Bot 3
+        //    distance = 1.7463*intensity - 76.2;//Bot 2
+           distance = 2.1791*intensity - 98.689;//Bot 3
            break;
         case 9:
-            //distance = ;//Bot 1
-            distance = 1.6595*intensity - 68.838;//Bot 2
-            //distance = ;//Bot 3
+            // distance = 1.6595*intensity - 68.838;//Bot 2
+            distance = 2.4349*intensity - 107.39;//Bot 3
             break;
         case 10:
-            //distance = ;//Bot 1
-            distance = 1.7076*intensity - 71.065;//Bot 2
-            //distance = ;//Bot 3
+            // distance = 1.7076*intensity - 71.065;//Bot 2
+            distance = 2.2621*intensity - 99.907;//Bot 3
             break;        
         case 11:
-            //distance = ;//Bot 1
-            distance = 1.626*intensity - 67.416;//Bot 2
-            //distance = ;//Bot 3
+            // distance = 1.626*intensity - 67.416;//Bot 2
+            distance = 1.2459*intensity - 49.236;//Bot 3
             break;
     }
     return distance;
