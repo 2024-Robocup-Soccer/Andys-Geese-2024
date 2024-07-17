@@ -1,110 +1,241 @@
 //---------Libraries---------
-#include <Arduino.h>
-#include <Adafruit_BNO08x.h>
-#include <RunningMedian.h>
-#include <Math.h>
 #include "irSensorV3.h"
+#include <RunningMedian.h>
+#include <math.h>
 
-//---------Compass Pins---------
-#define BNO08X_CS 10
-#define BNO08X_INT 9
-#define BNO08X_RESET -1
-
-//---------Initializing Libraries---------
-IRSensor irSensor;
-Adafruit_BNO08x bno08x(BNO08X_RESET);
-sh2_SensorValue_t sensorValue;
-RunningMedian ballAngleMedian = RunningMedian(5);
-
-//REQUIRED FOR COMPASS SETUP
-//Used for setting up the compass
-void setReports(void) {
-    Serial.println("Setting desired reports");
-    if (!bno08x.enableReport(SH2_GAME_ROTATION_VECTOR)) {Serial.println("Could not enable game vector");}
+//Setting up the RunningMedian for each Sensor
+IRSensor::IRSensor() 
+: s1Distance(sensorReadCount), s2Distance(sensorReadCount), s3Distance(sensorReadCount), s4Distance(sensorReadCount), s5Distance(sensorReadCount), s6Distance(sensorReadCount), s7Distance(sensorReadCount), s8Distance(sensorReadCount), s9Distance(sensorReadCount), s10Distance(sensorReadCount), s11Distance(sensorReadCount), s12Distance(sensorReadCount) {
 }
 
-//Initialize the Compass
-void compassInit() {
-    if (bno08x.wasReset()) {setReports();}
-    if (!bno08x.getSensorEvent(&sensorValue)) {return;}
-}
+//Putting all the RunningMedian into a array
+const int numberMedianValues = 25;
+RunningMedian sDistances[12] = {RunningMedian(numberMedianValues), RunningMedian(numberMedianValues), RunningMedian(numberMedianValues), 
+RunningMedian(numberMedianValues), RunningMedian(numberMedianValues), RunningMedian(numberMedianValues),RunningMedian(numberMedianValues), 
+RunningMedian(numberMedianValues), RunningMedian(numberMedianValues), RunningMedian(numberMedianValues), RunningMedian(numberMedianValues), 
+RunningMedian(numberMedianValues)};
 
 
-//Returns the a int from 0-11 for which sensor the ball is closest to. 
-float getBotAngle() {return sensorValue.un.gameRotationVector.k;}
+//-----------Variables------------
+int lowestPin[numberMedianValues];
+int IR_PINS[12] = {A11, A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10};
+//12, 1, 2, 3 ... 11
+int sensorValues[12];
 
-//Packs the data so it can be sent down
-//type 1 = compass, 2 = ball distance, 3 = ball angle, 4 = net angle
-int pack(int value, int type) {
-    int info = -1;
-    switch(type) {
-    case 1: 
-        info = map(value, -99, 99, 0, 250);
-        break;
-    case 2:
-        info = map(value, 0, 1557, 0, 250);
-        break;
-    case 3:
-        info = map(value, 0, 11, 0, 250);
-        break;
-    case 4: 
-        info = info;
-        break;
+
+//------------  
+void IRSensor::readSensors() {
+    for (int i = 0; i < sensorReadCount; i++) {
+        s1Distance.add(analogRead(A0));
+        s2Distance.add(analogRead(A1));
+        s3Distance.add(analogRead(A2));
+        s4Distance.add(analogRead(A3));
+        s5Distance.add(analogRead(A4));
+        s6Distance.add(analogRead(A5));
+        s7Distance.add(analogRead(A6));
+        s8Distance.add(analogRead(A7));
+        s9Distance.add(analogRead(A8));
+        s10Distance.add(analogRead(A9));
+        s11Distance.add(analogRead(A10));
+        s12Distance.add(analogRead(A11));
     }
-    return info;
+
+    sensorValues[0] = s1Distance.getMedian();
+    sensorValues[1] = s2Distance.getMedian();
+    sensorValues[2] = s3Distance.getMedian();
+    sensorValues[3] = s4Distance.getMedian();
+    sensorValues[4] = s5Distance.getMedian();
+    sensorValues[5] = s6Distance.getMedian();
+    sensorValues[6] = s7Distance.getMedian();
+    sensorValues[7] = s8Distance.getMedian();
+    sensorValues[8] = s9Distance.getMedian();
+    sensorValues[9] = s10Distance.getMedian();
+    sensorValues[10] = s11Distance.getMedian();
+    sensorValues[11] = s12Distance.getMedian();
 }
 
-//setup
-void setup(){
-//--------Starting Serial-----------
-    Serial.begin(9600);
-    Serial7.begin(20000000);
-
-//-------Starting Compass UART-----------
-    if (!bno08x.begin_UART(&Serial1)) {
-        Serial.println("Failed to find BNO08x chip");
-        while (1) {
-            delay(10);
+int IRSensor::findMinSensor() {
+    readSensors();
+    int min = 1e8;
+    int minIndex = -1;
+    for (int i = 0; i < 12; i++) {
+        int cur = sensorValues[i];
+        if (cur < min) {
+            min = cur;
+            minIndex = i;
         }
     }
-    setReports();
-    delay(100);
+    return minIndex;
 }
 
-void loop() {
-
-    compassInit();//Compass
-    
-    //---------------Setting up Variables---------------
-    u_int8_t compassAngle = pack(getBotAngle()*100, 1);
-    u_int8_t ballAngle = pack(ballAngleMedian.getMedian(), 3);
-    u_int8_t intensity = irSensor.getIntensity(ballAngle);
-    u_int8_t distance = pack(irSensor.findSensorDistance(ballAngle, intensity), 2);
-
-    //Getting the RunningMedian of the BallAngle
-    ballAngleMedian.add(irSensor.getBallAngle());
-
-    //Reading value from Camera
-    int cameraValue = pulseIn(10, HIGH, 600);
-
-    //If the camera sends down anything above 0. It means that it is getting valid data from Camera
-    //If camera sends anything above 250. It means that it cannot see the net and will set it to 253. 
-    if (cameraValue > 0) {if(cameraValue > 250) {cameraValue = 253;}}
-    else {cameraValue = 0;}
-    
-    //Putting all the data into a array to send down
-    u_int8_t information[5] = { 255, compassAngle, distance, ballAngle, u_int8_t(cameraValue) };
-    
-    //Sending down the Data down
-    Serial7.write(information, 5);
-
-    //--------DeBug/Read Data-----------
-    Serial.print("compass angle: ");
-    Serial.print(information[1]);
-    Serial.print(" ball distance: ");
-    Serial.print(information[2]);
-    Serial.print(" ball angle: ");
-    Serial.print(information[3]);
-    Serial.print(" net angle: ");
-    Serial.println(information[4]);
+int IRSensor::findBallDirection() {
+    int averageCount= 5;
+    int closestSensor;
+    for (int i=0; i< 5;i++){
+        closestSensor += findMinSensor();
+    }
+    closestSensor = closestSensor/5;
+    return (closestSensor + 1) * 30;
 }
+
+void IRSensor::printBallDirection() {
+    Serial.print("Ball direction: ");
+    Serial.println(findBallDirection());
+}
+
+void IRSensor::debugValues() {
+    for(int i = 0; i < 12; i++) {
+        Serial.print(i+1);
+        Serial.print(": ");
+        Serial.println(sensorValues[i]);
+    }
+}
+
+  void IRSensor::debugComponents() {
+    for(int i = 0; i < 12; i++) {
+      Serial.print(i+1);
+      Serial.print(": ");
+      double angle = ((i+1) * 360.0) / 12.0; 
+      double radians = angle * DEG_TO_RAD; 
+      double x = sensorValues[i] * cos(radians);
+      double y =  sensorValues[i] * sin(radians);
+      Serial.print(x);
+      Serial.print(" ");
+      Serial.println(y);
+    }
+  }
+
+  
+float IRSensor::findSensorDistance(int sensor, int intensity) {
+    float distance = -1;
+    switch (sensor) {
+        case 0:
+            //  distance = 1.9214*intensity - 81.673;//Bot 2
+             distance = 1.7369*intensity - 73.232;//Bot 3
+            break;
+        case 1:
+            // distance =1.6369*intensity - 72.97;//Bot 2
+            distance =  1.4055*intensity - 65.84;//Bot 3
+            break;
+        case 2:
+            // distance = 1.5889*intensity - 65.907;//Bot 2
+            distance = 1.5968*intensity - 79.193;//Bot 3
+            break;
+        case 3:
+            // distance = 1.8732*intensity - 78.922;//Bot 2
+            distance = 1.5068*intensity - 63.67;//Bot 3
+            break;
+        case 4:
+            // distance = 2.1074*intensity - 86.835;//Bot 2
+            distance = 2.0493*intensity - 95.69;//Bot 3
+            break;
+
+        case 5:
+        //    distance = 1.9093*intensity - 80.002;//Bot 2
+           distance = 1.3739*intensity - 61.794;//Bot 3
+           break;
+        case 6:
+        //    distance = 1.6892*intensity - 71.084;//Bot 2
+           distance = 1.9931*intensity - 88.442;//Bot 3
+           break;
+        case 7:
+            // distance = 1.7187*intensity - 73.411;//Bot 2
+            distance = 1.5659*intensity - 64.019;//Bot 3
+           break;
+        case 8:
+        //    distance = 1.7463*intensity - 76.2;//Bot 2
+           distance = 2.1791*intensity - 98.689;//Bot 3
+           break;
+        case 9:
+            // distance = 1.6595*intensity - 68.838;//Bot 2
+            distance = 2.4349*intensity - 107.39;//Bot 3
+            break;
+        case 10:
+            // distance = 1.7076*intensity - 71.065;//Bot 2
+            distance = 2.2621*intensity - 99.907;//Bot 3
+            break;        
+        case 11:
+            // distance = 1.626*intensity - 67.416;//Bot 2
+            distance = 1.2459*intensity - 49.236;//Bot 3
+            break;
+    }
+    return distance;
+}
+
+
+//returns the which sensor the ball is closest to
+int IRSensor::getBallAngle(){
+    int lowestSensor =100000;
+    int sensor;
+    for(int i=0; i<12;i++){
+        int intensity = analogRead(IR_PINS[i]);
+        int distance = findSensorDistance(i,intensity);
+        if(distance < lowestSensor){
+            lowestSensor = distance;
+            sensor = i;
+        }
+    }
+    return sensor;
+}
+
+
+//puts raw data into curve then takes median
+void IRSensor::readCalibratedSensors() {
+    int min;
+    int minIndex;
+    for(int i = 0; i < numberMedianValues; i++) {
+        min = 1e8;
+        minIndex = -1;
+        for(int j = 0; j < 12; j++) {
+            sensorValues[j] = analogRead(IR_PINS[j]);
+            sDistances[j].add(findSensorDistance(j, sensorValues[j]));
+            if(sensorValues[j] < min) {
+                minIndex = j;
+                min = sensorValues[j];
+            }
+        }
+        if(minIndex != -1) lowestPin[i] = (minIndex);
+    }
+}
+
+
+//Works by adding the compenents of the angle of the sensor as if it was a unit circle
+//then diving by the number of sensor values
+float IRSensor::calculateCircularAverage() {
+    float sinSum = 0.0;
+    float cosSum = 0.0;
+    float radiansPerValue = (2.0 * PI) / 12.0;
+
+    for(int i = 0; i < numberMedianValues; i++) {
+        float angle = sensorValues[i] * radiansPerValue;
+        sinSum += sin(angle);
+        cosSum += cos(angle);
+    }
+
+    float avgAngle = atan2(sinSum / numberMedianValues, cosSum / numberMedianValues);
+
+    if (avgAngle < 0) {
+        avgAngle += 2.0 * 3.14;
+    }
+
+    float averageValue = avgAngle / radiansPerValue;
+    return averageValue;
+}
+
+
+float IRSensor::calculateSensorError(int desiredSensor, int actualSensor) {
+    int error = desiredSensor - actualSensor;
+    
+    if (error > 11) {
+        error -= 11;
+    } else if (error < 0) {
+        error += 11;
+    }
+
+    return error;
+}
+
+int IRSensor::getIntensity(int ballAngle){
+    return analogRead(IR_PINS[ballAngle]);
+}
+
