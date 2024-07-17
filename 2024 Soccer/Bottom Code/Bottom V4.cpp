@@ -83,7 +83,7 @@ float calculateAngleError(float desiredDegrees, float actualDegrees, int type) {
 
     switch(type) {
     //this is the case where we are using the camera pid which is the normal case
-    //zero is straight in front and clockwise is positive
+    //zero is straight in front and counter-clockwise is positive
     case 1:
         if (error > 180) {
             error -= 360;
@@ -91,6 +91,9 @@ float calculateAngleError(float desiredDegrees, float actualDegrees, int type) {
         else if (error < -180) {
             error += 360;
         }
+    //this is the other case when the bot can no longer see the net
+    //it now needs to find the error of robot angle which follows same
+    //pattern as net, counter-clockwise (+) to 0 to clockwise (-)
     case 2:
         error *= (360/12);
         if (error > 180) {
