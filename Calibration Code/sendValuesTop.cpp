@@ -4,23 +4,36 @@
 
 void setup() {
     Serial.begin(9600);
-    Serial7.begin(9600);
+    Serial7.begin(20000000);
 }
 
-int compassAngle = 0;
-int distance = 0;
-int ballAngle = 0;
-int val = 1;
+ u_int8_t compassAngle = 100;
+    u_int8_t ballAngle = 100;
+    u_int8_t intensity = 100;
+    u_int8_t distance = 100;
 
 void loop() {
+    //---------------Setting up Variables---------------
+    u_int8_t compassAngle = 100;
+    u_int8_t ballAngle = 100;
+    u_int8_t intensity = 100;
+    u_int8_t distance = 100;
+    int cameraValue = 100;
     
-    Serial7.write(255);
-    Serial7.write(compassAngle);
-    Serial7.write(distance);
-    Serial7.write(ballAngle);
-    // 0 = no info from the camera
-    // 1-250 = angle value of goal relative to robot
-    // 500 = no goal found
-    if (val>0){ Serial7.write(val);}
-    else{Serial7.write(-1);}//No Info from Camera
+    //Putting all the data into a array to send down
+    u_int8_t information[5] = { 255, compassAngle, distance, ballAngle, u_int8_t(cameraValue) };
+
+    
+    //Sending down the Data down
+    Serial7.write(information, 5);
+
+    //--------DeBug/Read Data-----------
+    Serial.print("compass angle: ");
+    Serial.print(information[1]);
+    Serial.print(" ballgit distance: ");
+    Serial.print(information[2]);
+    Serial.print(" ball angle: ");
+    Serial.print(information[3]);
+    Serial.print(" net angle: ");
+    Serial.println(information[4]);
 }
