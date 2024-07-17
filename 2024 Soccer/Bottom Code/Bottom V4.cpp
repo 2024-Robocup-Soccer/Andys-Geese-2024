@@ -82,6 +82,8 @@ float calculateAngleError(float desiredDegrees, float actualDegrees, int type) {
     float error = desiredDegrees - actualDegrees;
 
     switch(type) {
+    //this is the case where we are using the camera pid which is the normal case
+    //zero is straight in front and clockwise is positive
     case 1:
         if (error > 180) {
             error -= 360;
