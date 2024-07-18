@@ -5,9 +5,9 @@
 #include "colorSensorV3.h"
 
 //starts at 7, 6, ... 9, 8 for all 16 s 
-int sensorValues[16];
+int colourSensorValues[16];
 
-const int numberSamples = 100;
+const int numberSamples = 200;
 const int differenceBetweenGreenAndWhite = 2;
 RunningMedian greenValues[16] = {RunningMedian(numberSamples), RunningMedian(numberSamples), RunningMedian(numberSamples), RunningMedian(numberSamples), 
     RunningMedian(numberSamples), RunningMedian(numberSamples), RunningMedian(numberSamples), RunningMedian(numberSamples), RunningMedian(numberSamples), 
@@ -16,7 +16,7 @@ RunningMedian greenValues[16] = {RunningMedian(numberSamples), RunningMedian(num
 
 int maximum = 0;
 
-float percentageIncrease = 1.05;
+float percentageIncrease = 1.20;
 
 bool isFilled = false;
 
@@ -178,32 +178,33 @@ void ColorSensor::fillMedians() {
     isFilled = true;
 }
 
-void ColorSensor::analyzeSensorValues() {
+void ColorSensor::readSensors() {
     for (int i = 0; i < 16; i++) {
-        sensorValues[i] = readSensor(i);
-        if(sensorValues[i] < greenValues[i].getAverage() * percentageIncrease) {
-            greenValues[i].add(sensorValues[i]);
+        colourSensorValues[i] = readSensor(i);
+        if(colourSensorValues[i] < greenValues[i].getAverage() * percentageIncrease) {
+            greenValues[i].add(colourSensorValues[i]);
         }
         else {
             Serial.print("bad ");
         }
-        Serial.print(greenValues[i].getAverage());
-        Serial.print(" ");
-        Serial.print(sensorValues[i]);
-        Serial.print(" ");
+        // Serial.print(greenValues[i].getAverage());
+        // Serial.print(" ");
+        // Serial.print(colourSensorValues[i]);
+        // Serial.print(" ");
     }
-    Serial.println();
+    // Serial.println();
 }
 
 float ColorSensor::calculateDirection() {
-    analyzeSensorValues();
+    // readSensors();
 
     float sumCos = 0;
     float sumSin = 0;
     int activeSensors = 0;
 
     for (int i = 0; i < 16; i++) {
-        if (sensorValues[i] > greenValues[i].getMedian()) {
+         colourSensorValues[i] = readSensor(i);
+        if (colourSensorValues[i] > greenValues[i].getMedian()*1.1) {
             float angle = ((2 * PI) / 16) * i;
             sumCos += cos(angle);
             sumSin += sin(angle);
@@ -213,20 +214,36 @@ float ColorSensor::calculateDirection() {
 
     if (activeSensors == 0) {
         // No line detected
-        return -1; // or some invalid value to indicate no detection
+        return 0; // or some invalid value to indicate no detection
     }
 
     float avgCos = sumCos / activeSensors;
     float avgSin = sumSin / activeSensors;
 
     return atan2(avgSin, avgCos);
+
+    //360 clockwise
+    //2.55 sensor 0
+    //-2.16 90
+    //-0.79 180
+    //0.98 270
+    //if negative between 90 and 180
+    //if positive between 0 and 270
+
+    //from 1.191 to above 2: move back
+    //from-2.40 to -1.5: move left
+    //from -0.7 to -1.18 move forward
+    //from 0.8 to 0.98 move right
+
 }
 
 
+
+
 void ColorSensor::visualize(){
-    analyzeSensorValues();
+    readSensors();
     for(int i = 0; i < 16; i++) {
-        if(sensorValues[i] > int(greenValues[i].getMedian() * percentageIncrease)) Serial.print("_");
+        if(colourSensorValues[i] > int(greenValues[i].getMedian() * percentageIncrease)) Serial.print("_");
         else Serial.print("*");
 	}
     Serial.println("");
@@ -234,9 +251,10 @@ void ColorSensor::visualize(){
 
 // input is 0 (sensor 12), 1 (sensor 1), ... 11 (sensor 11)
 bool ColorSensor::detectColor(int sensor){
-    sensorValues[sensor] = readSensor(sensor);
-    if(sensorValues[sensor] > greenValues[sensor].getMedian() * percentageIncrease) return true;
+    colourSensorValues[sensor] = readSensor(sensor);
+    if(colourSensorValues[sensor] > greenValues[sensor].getMedian() * percentageIncrease) return true;
     else return false;
 } 
+
 
 
