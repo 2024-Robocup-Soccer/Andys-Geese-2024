@@ -9,7 +9,7 @@ public:
     ColorSensor();
     void init();
     int readSensor(int sensor);
-    void analyzeSensorValues();
+    void readSensors();
     void fillMedians();
     float calculateDirection(); 
     void visualize();
