@@ -10,24 +10,38 @@ const float pi = PI;
 int information, robotAngle, ballDistance, ballAngle, netAngle, motorValue, inputType;
 bool inAdj = false;
 bool onGreen = false; 
-int speed = 160;
-
-//pid values
-float kPAngle = 0.5;
+int speed = 100;
 
 ColorSensor colourSensor;
 Motor motorController;
 
 int timeZero;
 void setup() {
-    Serial.begin(9600);
+    Serial.begin(20000000);
     Serial2.begin(20000000);
     timeZero = millis();
 
     motorController.initMotors();
     colourSensor.init();
 }
+void sync() {
+    byte check[5];
+    int shift=0;
+    if(Serial2.available() > 4) {
+        Serial2.readBytes(check, 5);
+    }
 
+    for (int i=0; i<5; i++) {
+        if (check[i] == 255) {
+            shift = i;
+        }
+    }
+
+    for (int i=0; i<shift; i++) {
+        Serial2.read();
+    }
+
+}
 int unpackData(int value, int type) {
     int info = -1;
     if(type == 1) {
@@ -48,35 +62,6 @@ int unpackData(int value, int type) {
     return info;
 }
 
-//if type == 1 (robot angle), type == 2 (ir ball)
-//Finds the error when you are using an angle
-//Makes up from the edge case from 0 - 360
-float calculateAngleError(float desiredDegrees, float actualDegrees, int type) {
-    float error = desiredDegrees - actualDegrees;
-
-    switch(type) {
-    case 1:
-        if (error > 180) {
-            error -= 360;
-        } 
-        else if (error < -180) {
-            error += 360;
-        }
-        break;
-    case 2:
-        error *= (360/12);
-        if (error > 180) {
-            error -= 360;
-        } 
-        else if (error < -180) {
-            error += 360;
-        }
-        break;
-    }
-
-    return error;
-}
-
 void behindBall(int ballAngle, int motorValue){
     if(!inAdj){
         if(ballAngle == 0){
@@ -91,7 +76,7 @@ void behindBall(int ballAngle, int motorValue){
             motorController.moveRobot(-motorValue, 0, motorValue, 0);
             Serial.println("Behind Ball Code");
         }
-        else if (ballAngle == 131 || ballAngle == 98 || ballAngle == 65 || ballAngle == 262 || ballAngle == 295 || ballAngle == 327){
+        else if (ballAngle == 131 || ballAngle == 98 || ballAngle == 262 || ballAngle == 295){
             motorController.moveRobot(motorValue, motorValue*0.7, -motorValue, -motorValue);
             Serial.println("Behind Ball Code");
         }
@@ -103,31 +88,13 @@ void behindBall(int ballAngle, int motorValue){
             motorController.moveRobot(0, motorValue, 0, -motorValue);
             Serial.println("Behind Ball Code");
         }
+        else if (ballAngle == 65) {
+            motorController.moveRobot(motorValue, -motorValue*1.25, -motorValue, motorValue);
+        }
+        else if (ballAngle == 327) {
+            motorController.moveRobot(-motorValue, motorValue*1.25, motorValue, -motorValue);
+        }
     }
-}
-
-float anglePID(float angle, bool camera, int speed) {
-    float angleError;
-    //The angle you wish to face
-    float desiredAngle = 0;
-    if(camera) {
-        angleError = desiredAngle - angle;
-    }
-    else {
-        angleError = calculateAngleError(desiredAngle, angle, 1);
-    }
-
-    float pAngleValue = kPAngle * angleError;
-    Serial.print("pAngleValue: ");
-    Serial.println(pAngleValue);
-
-    float pidValue = pAngleValue;
-    return pidValue * speed; 
-}
-
-void pointNorth(float compassAngle, bool PID) {
-    int motor = anglePID(compassAngle, false, 100);
-    motorController.moveRobot(motor, motor, motor, motor);
 }
 
 void pointNorth(float compassAngle){
@@ -149,58 +116,84 @@ void pointNorth(float compassAngle){
         Serial.println("Point North Code");
     }
 }
+int moveDir() {
+    int averageCount = 5;
+    float newVal=0;
+    float val = colourSensor.calculateDirection();
+    for(int i=0;i<averageCount;i++){
+        newVal += colourSensor.calculateDirection();
+    }
+    newVal = newVal/averageCount;
+    if (newVal > 1.91) {
+        return 0;
+    }
+    else if (newVal >= -0.8 && newVal <= -0.1) {
+        return 180;
+    }
+    else if(newVal >=0.7 && newVal <= 1.2) {
+        return 270;
+    }
+    else if(newVal>=-2.6 && newVal <-1.7){
+        return 90;
+    }
+    else if(newVal == 0){
+        return -1;
+    }
+    else{
+        return -255;
+    }
+}
 
-void avoidWhite(int motorValue){
-
-    int val = colourSensor.moveDir();
-    int lastValue = val;
+void avoidWhite(int motorValues){
+    int curval = moveDir();
     int time = 2000;
+    Serial.println(curval);
 
-    if(val == 255){
-        val = lastValue;
+    if(curval == 255){
+
         onGreen = false;
     }
-    else if(val == 0){
+    else if(curval == 0){
         //move back
         onGreen = false;
         int startmillis = millis();
         // for (int i=0; i<time; i++) {
-            motorController.moveRobot(motorValue*0.7, motorValue*0.7, -motorValue*1.2, -motorValue*1.2);
+            motorController.moveRobot(motorValues*0.7, motorValues*0.7, -motorValues*1.2, -motorValues*1.2);
         // }
         Serial.print("Move Backward");
 
     }
-    else if(val == 90){
+    else if(curval == 90){
         //move left
         onGreen = false;
         int startmillis = millis();
         // for (int i=0; i<time; i++) {
-            motorController.moveRobot(motorValue, -motorValue, -motorValue, motorValue);
+            motorController.moveRobot(motorValues, -motorValues, -motorValues, motorValues);
         // }
         Serial.print("Move Left");
 
     }
-    else if(val == 180){
+    else if(curval == 180){
         //move forward
         onGreen = false;
         int startmillis = millis();
         // for (int i=0; i<time; i++) {
-            motorController.moveRobot(-motorValue, -motorValue, motorValue, motorValue);
+            motorController.moveRobot(-motorValues, -motorValues, motorValues, motorValues);
         // }
         Serial.print("Move Forward");
 
     }
-    else if(val == 270){
+    else if(curval == 270){
         //move right
         onGreen = false;
         int startmillis = millis();
         // for (int i=0; i<time; i++) {
-            motorController.moveRobot(-motorValue, motorValue, motorValue, -motorValue);
+            motorController.moveRobot(-motorValues, motorValues, motorValues, -motorValues);
         // }
         Serial.print("Move Right");
         
     }
-    else if(val == -1){
+    else if(curval == -1){
         //on green
         onGreen = true;
         motorController.moveRobot(0, 0, 0, 0);
@@ -208,6 +201,9 @@ void avoidWhite(int motorValue){
         
 
     }
+    else{}
+
+    // sync();
 }
 
 void loop() {
@@ -240,9 +236,8 @@ void loop() {
             inputType = 0;
             break;
         }
+        Serial2.flush();
     }
-
-
 
     Serial.print("Robot Angle: ");
     Serial.print(robotAngle);
@@ -254,11 +249,11 @@ void loop() {
     Serial.print(netAngle);
     // Serial.print(" Green Direction: ");
     
-    // avoidWhite(speed);
-    // if(onGreen = true){
-        pointNorth(robotAngle, true);
+    avoidWhite(speed);
+    if(onGreen == true){
+        pointNorth(robotAngle);
         behindBall(ballAngle, speed);
-    // }
+    }
     // Serial.print(colourSensor.calculateDirection());
     // Serial.print(colourSensor.moveDir());
     // delay(10);
