@@ -9,9 +9,9 @@ bufferVal = 40
 # Color Tracking Thresholds (L Min, L Max, A Min, A Max, B Min, B Max)
 # The below thresholds track in general red/green things. You may wish to tune them...
 thresholds = [
-   (72, 90, -4, 36, 24, 48),
-   (14, 33, -11, 10, -47, -12)
-
+  # (72, 90, -4, 36, 24, 48),
+  # (14, 33, -11, 10, -47, -12)
+  (1, 37, 3, 36, -6, 21)
 ]  # generic_blue_thresholds
 # You may pass up to 16 thresholds above. However, it's not really possible to segment any
 # scene with 16 thresholds before color thresholds start to overlap heavily.
@@ -45,6 +45,7 @@ while True:
     if blobs:
         largest = blobs[0]
         for blobsss in blobs:
+
             if blobsss.area() > largest.area():
                 largest = blobsss
 
