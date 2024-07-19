@@ -67,7 +67,8 @@ float Motor::movementSineFunction(int motor, float ballAngle, bool isCounter, fl
         amplitude += 10;
     }
     float motorValue;
-    switch (motor) {
+    if(isCounter) {
+        switch (motor) {
         case 1:
             motorValue = amplitude * sin((ballAngle + 45-20) * PI/180 );
             // motorValue = amplitude * sin(ballAngle);
@@ -86,13 +87,32 @@ float Motor::movementSineFunction(int motor, float ballAngle, bool isCounter, fl
             // motorValue = amplitude * sin(ballAngle + 3 * PI/4 + 3 * PI/16);
             break;
         default: motorValue = 0;
-        
+        }
     }
-
-    if (isCounter) {
-        motorValue *= -1;
+   
+    else {
+        switch (motor) {
+        case 1:
+            motorValue = -1 * amplitude * sin((ballAngle + 45+20) * PI/180 );
+            // motorValue = amplitude * sin(ballAngle);
+            break;
+        case 2:
+            motorValue = -1 * amplitude * sin((ballAngle - 45+20) * PI/180);
+            // motorValue = amplitude * sin(ballAngle);
+            break;
+        case 3:
+            motorValue = -1 * amplitude * sin((ballAngle - 135+20) * PI/180);
+            // motorValue = amplitude * -1 * sin(ballAngle - PI);
+            break;
+        case 4:
+            motorValue = -1 * amplitude * sin((ballAngle + 135+20) * PI/180);
+            // motorValue = amplitude * -1 * sin(ballAngle + PI);
+            // motorValue = amplitude * sin(ballAngle + 3 * PI/4 + 3 * PI/16);
+            break;
+        default: motorValue = 0;
+        }
     }
-
+    
     Serial.println(ballAngle);
 
     return motorValue;
