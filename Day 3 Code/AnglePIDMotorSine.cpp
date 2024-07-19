@@ -85,7 +85,7 @@ void sync() {
 }
 
 
-//if type == 1 (robot angle), type == 2 (ir ball)
+//if type == 1 (robot angle), type == 2 (ir ball), type == 3 (colour +/- 90)
 //Finds the error when you are using an angle
 //Makes up from the edge case from 0 - 360
 float calculateAngleError(float desiredDegrees, float actualDegrees, int type) {
@@ -101,7 +101,6 @@ float calculateAngleError(float desiredDegrees, float actualDegrees, int type) {
         }
         break;
     case 2:
-        error *= (360/12);
         if (error > 180) {
             error -= 360;
         } 
@@ -113,6 +112,18 @@ float calculateAngleError(float desiredDegrees, float actualDegrees, int type) {
 
     return error;
 }
+
+//if type == 1 (robot angle), type == 2 (ir ball), type (colour +/- 90) with isColourChangePositive
+//Finds the error when you are using an angle
+//Makes up from the edge case from 0 - 360
+// float calculateAngleError(float desiredDegrees, float actualDegrees, int type, bool isColourChangePositive) {
+//     float error = desiredDegrees - actualDegrees;
+
+//     if() {
+//     }
+
+//     return error;
+// }
 
 int unpackData(int value, int type) {
     int info = -1;
@@ -165,6 +176,18 @@ float movementPID(int motor, bool isMovingClockwise, int speed, float ballAngle)
     //     motorValue -= 30;
     // }
 
+    return motorValue;
+}
+
+//This function is a "child" of movement sine but creates a vector of movement normal to line if it 
+//is seen. The parameters are the same as movement sine with the addition of colourDirection which
+//is -1.0 if line is not seen and 0.0-360.0 in the direction of the line
+//Outputs -1 if not working 
+int movementSineColour(int motor, float ballAngleDegrees, bool isCounter, float amplitude, float colourDirection) {
+    int motorValue = -1;
+    motorValue = motorController.movementSineFunction(motor, ballAngleDegrees, isCounter, amplitude);
+
+    if(calculateAngleError() &&  )
     return motorValue;
 }
 
