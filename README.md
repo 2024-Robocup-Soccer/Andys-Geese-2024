@@ -43,3 +43,6 @@ Technologies used in the project:
 *   GA25YN370 12V 1000RPM Motors
 *   Pololu G2 High-Power Motor Driver 18v25
 *   Photodiodes
+
+<img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png" alt="CC BY-SA 4.0">
+CC BY-SA 4.0
